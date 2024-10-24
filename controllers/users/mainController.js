@@ -37,7 +37,7 @@ const loadCategory = async (req, res) => {
 const getProduct = async (req, res) => {
     try {
 
-        const userId = req.query.userId
+        const userId = req.userId
         
         const productIdToCheck = req.params.productId;
 
@@ -47,8 +47,6 @@ const getProduct = async (req, res) => {
                 cart: { $elemMatch: { product: productIdToCheck } },
             }
         )
-
-        console.log(userId);
         
         const productData = await Product.findById(productIdToCheck);
 

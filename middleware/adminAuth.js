@@ -13,6 +13,9 @@ const adminAuth = async (req, res, next) => {
 
         const adminData = await Admin.findById(decoded.id);
 
+        console.log(adminData);
+        
+
         req.adminId = decoded.id;
 
         if (adminData !== null) {
