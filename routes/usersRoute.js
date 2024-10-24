@@ -13,6 +13,7 @@ const mainController = require("../controllers/users/mainController")
 const loginSignupController = require("../controllers/users/login&signupController")
 const cartCheckoutController = require("../controllers/users/cartCheckoutController")
 const orderController = require("../controllers/users/orderController")
+const profileController = require("../controllers/users/profileController")
 
 // Common
 usersRoute.get("/get-category", mainController.loadCategory)
@@ -24,6 +25,10 @@ usersRoute.get("/get-product/:productId", mainController.getProduct)
 usersRoute.post("/register", loginSignupController.insertUsers)
 usersRoute.post("/validateOtp", loginSignupController.verifiyOTP)
 usersRoute.post("/login", loginSignupController.verifyLogin)
+
+
+// Profile
+usersRoute.get("/get/profile", userAuth, profileController.loadProfile)
 
 
 // Cart

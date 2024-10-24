@@ -17,10 +17,6 @@ const users = mongoose.Schema({
         type: String,
         required: true
     },
-    profile: {
-        type: String,
-        default: ''
-    },
     cart: [
         {
             product: {

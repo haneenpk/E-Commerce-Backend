@@ -9,6 +9,7 @@ const Imagemiddleware = require('../middleware/imageUpload')
 const loginController = require("../controllers/admin/loginController");
 const categoryController = require("../controllers/admin/categoryController");
 const productController = require("../controllers/admin/productController");
+const orderController = require("../controllers/admin/orderController");
 
 adminRoute.use(bodyParser.json());
 adminRoute.use(bodyParser.urlencoded({ extended: true }));
@@ -26,6 +27,10 @@ adminRoute.put("/edit-category/:categoryId", adminAuth, categoryController.editC
 // Product
 adminRoute.post("/add-product", adminAuth, Imagemiddleware.uploadProductImages, Imagemiddleware.resizeProductImages ,productController.addProduct);
 adminRoute.get("/get-products", adminAuth, productController.loadProducts);
+
+// Order
+adminRoute.get("/order", adminAuth, orderController.loadOrder)
+adminRoute.get("/order/action-update", adminAuth, orderController.updateActionOrder)
 
 // 404 handler for invalid requests
 adminRoute.use((req, res) => {
