@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
-const Admin = require("../models/adminModel");
+const User = require("../models/usersModel");
 
-const adminAuth = async (req, res, next) => {
+const userAuth = async (req, res, next) => {
   try {
     const token = req.headers.authorization;
 
@@ -11,11 +11,11 @@ const adminAuth = async (req, res, next) => {
       try {
         const decoded = jwt.verify(token.slice(7), process.env.JWT_SECRET);
 
-        const adminData = await Admin.findById(decoded.id);
+        const userData = await User.findById(decoded.id);
 
-        req.adminId = decoded.id;
+        req.userId = decoded.id;
 
-        if (adminData !== null) {
+        if (userData !== null) {
           next();
         } else {
           res.status(401).json({ message: 'Not authorized, invalid token' });
@@ -33,4 +33,4 @@ const adminAuth = async (req, res, next) => {
   }
 };
 
-module.exports = adminAuth;
+module.exports = userAuth;

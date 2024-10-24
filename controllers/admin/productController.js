@@ -48,6 +48,7 @@ const addProduct = async (req, res) => {
 
 const loadProducts = async (req, res) => {
     try {
+        
         const Products = await Product.find().populate('categoryId', 'name'); // Populate category name
 
         if (!Products) {

@@ -1,5 +1,6 @@
 const Category = require("../../models/categoryModel")
 const Product = require("../../models/productModel")
+const User = require("../../models/usersModel")
 
 const loadProducts = async (req, res) => {
     try {
@@ -35,14 +36,27 @@ const loadCategory = async (req, res) => {
 
 const getProduct = async (req, res) => {
     try {
+
+        const userId = req.query.userId
         
-        const Data = await Product.findOne({_id:req.params.productId})
+        const productIdToCheck = req.params.productId;
 
-        if (!Data) {
-            return res.status(400).json({ message: 'Product Empty' });
+        const check = await User.findOne(
+            {
+                _id: userId,
+                cart: { $elemMatch: { product: productIdToCheck } },
+            }
+        )
+
+        console.log(userId);
+        
+        const productData = await Product.findById(productIdToCheck);
+
+        if (check) {
+            return res.status(200).json({ message: 'already exist', data: productData });
+        } else {
+            return res.status(200).json({ message: 'Success', data: productData });
         }
-
-        return res.status(200).json({ message: 'Success', data: Data });
 
     } catch (error) {
         // Catch any server errors and respond with an error message
