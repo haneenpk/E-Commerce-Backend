@@ -12,10 +12,7 @@ const adminAuth = async (req, res, next) => {
         const decoded = jwt.verify(token.slice(7), process.env.JWT_SECRET);
 
         const adminData = await Admin.findById(decoded.id);
-
-        console.log(adminData);
         
-
         req.adminId = decoded.id;
 
         if (adminData !== null) {

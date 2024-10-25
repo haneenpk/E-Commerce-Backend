@@ -37,8 +37,8 @@ const loadCategory = async (req, res) => {
 const getProduct = async (req, res) => {
     try {
 
-        const userId = req.userId
-        
+        const userId = req.query.userId
+
         const productIdToCheck = req.params.productId;
 
         const check = await User.findOne(
@@ -47,7 +47,7 @@ const getProduct = async (req, res) => {
                 cart: { $elemMatch: { product: productIdToCheck } },
             }
         )
-        
+
         const productData = await Product.findById(productIdToCheck);
 
         if (check) {

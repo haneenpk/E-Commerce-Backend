@@ -10,12 +10,17 @@ const loginController = require("../controllers/admin/loginController");
 const categoryController = require("../controllers/admin/categoryController");
 const productController = require("../controllers/admin/productController");
 const orderController = require("../controllers/admin/orderController");
+const mainController = require("../controllers/admin/mainController");
 
 adminRoute.use(bodyParser.json());
 adminRoute.use(bodyParser.urlencoded({ extended: true }));
 
 // Define routes with proper controller methods
 adminRoute.post("/login", loginController.verifyLogin);
+
+adminRoute.get("/dashboard", adminAuth, mainController.loadDashboard)
+adminRoute.get("/getData", adminAuth, mainController.getData)
+
 
 // Category
 adminRoute.post("/add-category", adminAuth, categoryController.addCategory);
@@ -24,13 +29,16 @@ adminRoute.get("/get-category/:categoryId", adminAuth, categoryController.getCat
 adminRoute.delete("/delete-catagory/:categoryId", adminAuth, categoryController.deleteCategory); 
 adminRoute.put("/edit-category/:categoryId", adminAuth, categoryController.editCategory);
 
+
 // Product
 adminRoute.post("/add-product", adminAuth, Imagemiddleware.uploadProductImages, Imagemiddleware.resizeProductImages ,productController.addProduct);
 adminRoute.get("/get-products", adminAuth, productController.loadProducts);
 
+
 // Order
 adminRoute.get("/order", adminAuth, orderController.loadOrder)
 adminRoute.get("/order/action-update", adminAuth, orderController.updateActionOrder)
+
 
 // 404 handler for invalid requests
 adminRoute.use((req, res) => {

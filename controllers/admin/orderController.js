@@ -1,5 +1,3 @@
-const Product = require("../../models/productModel")
-const User = require("../../models/usersModel")
 const Order = require("../../models/orderModel")
 
 const loadOrder = async (req, res) => {
