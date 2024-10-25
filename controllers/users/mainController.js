@@ -36,29 +36,41 @@ const loadCategory = async (req, res) => {
 
 const getProduct = async (req, res) => {
     try {
-
-        const userId = req.query.userId
-
+        const userId = req.query.userId;
         const productIdToCheck = req.params.productId;
-
-        const check = await User.findOne(
-            {
-                _id: userId,
-                cart: { $elemMatch: { product: productIdToCheck } },
-            }
-        )
 
         const productData = await Product.findById(productIdToCheck);
 
-        if (check) {
-            return res.status(200).json({ message: 'already exist', data: productData });
-        } else {
+        if (!productData) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+
+        // Check if userId is "null" (string) or null (actual null value)
+        if (!userId || userId === "null") {
+            return res.status(200).json({ message: 'Success', data: productData });
+        }
+
+        // Only perform User check if we have a valid userId
+        try {
+            const check = await User.findOne({
+                _id: userId,
+                cart: { $elemMatch: { product: productIdToCheck } },
+            });
+
+            return res.status(200).json({
+                message: check ? 'already exist' : 'Success',
+                data: productData
+            });
+        } catch (userError) {
+            // If there's an error finding the user, still return the product
             return res.status(200).json({ message: 'Success', data: productData });
         }
 
     } catch (error) {
-        // Catch any server errors and respond with an error message
-        return res.status(500).json({ message: 'Internal Server Error', error: error.message });
+        return res.status(500).json({
+            message: 'Internal Server Error',
+            error: error.message
+        });
     }
 }
 
